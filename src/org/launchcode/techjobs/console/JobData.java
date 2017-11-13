@@ -21,6 +21,8 @@ public class JobData {
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
+
+    // BOnus mission
     private static ArrayList<HashMap<String, String>> allJobs(){
         loadData();
         ArrayList<HashMap<String, String>> returnArray = new ArrayList<>(allJobs);
