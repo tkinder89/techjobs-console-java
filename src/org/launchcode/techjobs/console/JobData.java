@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LaunchCode
@@ -20,6 +21,11 @@ public class JobData {
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
+    private static ArrayList<HashMap<String, String>> allJobs(){
+        loadData();
+        ArrayList<HashMap<String, String>> returnArray = new ArrayList<>(allJobs);
+        return returnArray;
+    }
 
     /**
      * Fetch list of all values from loaded data,
@@ -35,7 +41,7 @@ public class JobData {
 
         ArrayList<String> values = new ArrayList<>();
 
-        for (HashMap<String, String> row : allJobs) {
+        for (HashMap<String, String> row : allJobs()) {
             String aValue = row.get(field);
 
             if (!values.contains(aValue)) {
@@ -72,11 +78,11 @@ public class JobData {
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
-        for (HashMap<String, String> row : allJobs) {
+        for (HashMap<String, String> row : allJobs()) {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -123,6 +129,29 @@ public class JobData {
             System.out.println("Failed to load job data");
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value){
+        loadData();
+
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList();
+
+        for(HashMap<String, String> job : allJobs()){
+            boolean found = false;
+            for(Map.Entry<String, String> key : job.entrySet()){
+                if(key.getValue().toLowerCase().contains(value.toLowerCase())){
+                    found = true;
+                    break;
+                }
+            }
+            if(found){
+                jobs.add(job);
+
+            }
+
+        }
+        return jobs;
     }
 
 }
